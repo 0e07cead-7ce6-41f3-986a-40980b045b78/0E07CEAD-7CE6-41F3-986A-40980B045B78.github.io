@@ -19,6 +19,14 @@ params:
       Welcome to my security research lab.
       
       Focusing on Pentesting, Cryptography, and DevSecOps.
+
+      <br><br>
+      <div style="border: 1px dashed #444; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px; max-width: 320px; text-align: left;">
+          <div style="color: #aaa; font-size: 0.8rem; margin-bottom: 10px;">🔒 SYSTEM LOGIN</div>
+          <input type="text" placeholder="Username" style="width: 100%; padding: 8px; margin-bottom: 10px; background: #111; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box;">
+          <input type="password" placeholder="Password" style="width: 100%; padding: 8px; margin-bottom: 15px; background: #111; border: 1px solid #333; color: white; border-radius: 4px; box-sizing: border-box;">
+          <button onclick="alert('🚫 ACCESS DENIED: Please re-enter.')" style="width: 100%; padding: 8px; background: #c00; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">Login</button>
+      </div>
   
   # 社群連結 (顯示在首頁的 icon)
   socialIcons:
