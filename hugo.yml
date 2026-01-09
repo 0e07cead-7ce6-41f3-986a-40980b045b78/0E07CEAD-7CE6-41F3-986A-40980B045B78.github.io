@@ -1,0 +1,48 @@
+baseURL: "https://12587456.xyz/"
+languageCode: "zh-tw"
+title: "Security & Code"
+theme: "PaperMod"
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+
+params:
+  # --- 主題外觀設定 ---
+  env: production
+  defaultTheme: dark  # 強制暗黑模式 (Hacker Style)
+  
+  # 首頁個人簡介區塊
+  homeInfoParams:
+    Title: "HELLO 👋"
+    Content: >
+      Welcome to my security research lab.
+      
+      Focusing on Pentesting, Cryptography, and DevSecOps.
+  
+  # 社群連結 (顯示在首頁的 icon)
+  socialIcons:
+    - name: github
+      url: "https://github.com/0E07CEAD-7CE6-41F3-986A-40980B045B78"
+    - name: email
+      url: "mailto:ba8c9ed0-d598-4a12-a713-d77b754e5407@12587456.xyz"
+
+# --- 選單設定 ---
+menu:
+  main:
+    - identifier: categories
+      name: Categories
+      url: /categories/
+      weight: 10
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 20
+    - identifier: about
+      name: GPG & CTF  # 這就是你的 CTF 頁面按鈕
+      url: /about/
+      weight: 30
+markup:
+  goldmark:
+    renderer:
+      unsafe: true

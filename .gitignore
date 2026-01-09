@@ -1,0 +1,21 @@
+# --- Hugo 產生的暫存檔 (不需要上傳) ---
+public/
+resources/
+.hugo_build_lock
+
+# --- 系統與編輯器垃圾檔 ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- [資安帝王條款] 絕對禁止上傳的金鑰與憑證 ---
+# 這些檔案如果上傳，你的伺服器權限就會外洩
+*.pem
+*.key
+*.asc
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+secret_token.txt
