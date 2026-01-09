@@ -47,7 +47,7 @@ menu:
       url: /tags/
       weight: 20
     - identifier: about
-      name: GPG & CTF  # 這就是你的 CTF 頁面按鈕
+      name: About Me  # 這就是你的 CTF 頁面按鈕
       url: /about/
       weight: 30
 markup:
