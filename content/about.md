@@ -88,56 +88,29 @@ if (btoa(userIn) === secret) {
 
 <br>
 <hr style="border: 0; border-top: 1px dashed #333; margin: 40px 0;">
-
 <div style="background: #0d1117; border: 1px solid #30363d; padding: 20px; border-radius: 6px; font-family: 'Courier New', monospace;">
-  <h3 style="margin-top: 0; color: #ff7b72;">💉 SQL Injection Playground</h3>
-  <p style="font-size: 0.9rem; color: #8b949e; margin-bottom: 15px;">
-    Legacy database query interface. <br>
-    <span style="color: #d2a8ff;">DO NOT</span> attempt to drop tables.
-  </p>
-  
-  <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-    <input type="text" id="sqlTrapAbout" placeholder="SELECT * FROM users WHERE id=..." 
-           style="flex: 1; padding: 10px; background: #010409; border: 1px solid #30363d; color: #79c0ff; border-radius: 4px; font-family: inherit; min-width: 200px;">
-    
-    <button onclick="runSQLTrap()" 
-            style="padding: 10px 20px; background: #238636; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;">
-      EXECUTE
-    </button>
-  </div>
-  
-  <div id="sqlOutputAbout" style="margin-top: 15px; padding: 10px; min-height: 40px; border-left: 3px solid #30363d; background: #161b22; color: #8b949e; font-size: 0.85rem;">
-    > Waiting for input...
-  </div>
+<h3 style="margin-top: 0; color: #ff7b72;">💉 SQL Injection Playground</h3>
+<p style="font-size: 0.9rem; color: #8b949e; margin-bottom: 15px;">Legacy database query interface. <br><span style="color: #d2a8ff;">DO NOT</span> attempt to drop tables.</p>
+<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+<input type="text" id="sqlTrapAbout" placeholder="SELECT * FROM users WHERE id=..." style="flex: 1; padding: 10px; background: #010409; border: 1px solid #30363d; color: #79c0ff; border-radius: 4px; font-family: inherit; min-width: 200px;">
+<button onclick="runSQLTrap()" style="padding: 10px 20px; background: #238636; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.2s;">EXECUTE</button>
 </div>
-
+<div id="sqlOutputAbout" style="margin-top: 15px; padding: 10px; min-height: 40px; border-left: 3px solid #30363d; background: #161b22; color: #8b949e; font-size: 0.85rem;">> Waiting for input...</div>
+</div>
 <script>
 function runSQLTrap() {
-  const input = document.getElementById('sqlTrapAbout').value;
-  const output = document.getElementById('sqlOutputAbout');
-  
-  // 偵測攻擊特徵
-  const suspicious = /['";]|\b(OR|UNION|SELECT|DROP|INSERT|DELETE|UPDATE|--)\b/i;
-  
-  output.innerHTML = "<span style='color:#79c0ff'>[+] Connecting to MySQL server...</span>";
-  
-  setTimeout(() => {
-    if (suspicious.test(input)) {
-      // 觸發陷阱
-      output.innerHTML = `
-        <span style='color:#ff7b72'>[!] FATAL ERROR: WAF INTERCEPTION</span><br>
-        ----------------------------------------<br>
-        Payload: <span style='color:#d2a8ff'>${input}</span><br>
-        Signature: <span style='color:#d2a8ff'>SQL_INJECTION_ATTEMPT</span><br>
-        Source IP: <span style='color:#d2a8ff'>LOGGED</span><br>
-        Action: <span style='color:red; font-weight:bold; background:#300;'>BLOCK & REPORT</span>
-      `;
-    } else if (input.trim() === "") {
-      output.innerHTML = "> Waiting for input...";
-    } else {
-      // 普通輸入
-      output.innerHTML = "<span style='color:#d29922'>[-] Error: Connection timed out (Error Code: 0xDEADBEEF)</span>";
-    }
-  }, 600);
+const input = document.getElementById('sqlTrapAbout').value;
+const output = document.getElementById('sqlOutputAbout');
+const suspicious = /['";]|\b(OR|UNION|SELECT|DROP|INSERT|DELETE|UPDATE|--)\b/i;
+output.innerHTML = "<span style='color:#79c0ff'>[+] Connecting to MySQL server...</span>";
+setTimeout(() => {
+if (suspicious.test(input)) {
+output.innerHTML = "<span style='color:#ff7b72'>[!] FATAL ERROR: WAF INTERCEPTION</span><br>----------------------------------------<br>Payload: <span style='color:#d2a8ff'>" + input + "</span><br>Signature: <span style='color:#d2a8ff'>SQL_INJECTION_ATTEMPT</span><br>Source IP: <span style='color:#d2a8ff'>LOGGED</span><br>Action: <span style='color:red; font-weight:bold; background:#300;'>BLOCK & REPORT</span>";
+} else if (input.trim() === "") {
+output.innerHTML = "> Waiting for input...";
+} else {
+output.innerHTML = "<span style='color:#d29922'>[-] Error: Connection timed out (Error Code: 0xDEADBEEF)</span>";
+}
+}, 600);
 }
 </script>
