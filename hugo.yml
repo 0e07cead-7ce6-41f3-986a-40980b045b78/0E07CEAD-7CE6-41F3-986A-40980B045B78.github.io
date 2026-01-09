@@ -3,7 +3,7 @@ languageCode: "zh-tw"
 title: "Security & Code"
 theme: "PaperMod"
 
-enableRobotsTXT: true
+enableRobotsTXT: false
 buildDrafts: false
 buildFuture: false
 
