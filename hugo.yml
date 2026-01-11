@@ -47,9 +47,13 @@ menu:
       url: /tags/
       weight: 20
     - identifier: about
-      name: About Me  # 這就是你的 CTF 頁面按鈕
+      name: About Me
       url: /about/
       weight: 30
+    - identifier: tools       # <--- 新增這一段
+      name: Cyber Tools
+      url: /tools/
+      weight: 40
 markup:
   goldmark:
     renderer:
