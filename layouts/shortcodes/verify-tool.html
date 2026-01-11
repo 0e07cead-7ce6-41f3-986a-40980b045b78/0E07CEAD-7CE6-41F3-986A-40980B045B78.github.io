@@ -11,10 +11,30 @@
 
     <div class="input-group">
         <label class="input-label">Message</label>
-        <textarea id="input-msg" class="hacker-input" rows="5" placeholder="貼上對應的原始訊息文字..."></textarea>
+        <textarea id="input-msg" class="hacker-input" rows="5" placeholder="貼上對應的原始訊息文字..." oninput="updateMessageHash()"></textarea>
     </div>
 
-    <!-- ✅ 新增：驗證說明區塊 -->
+    <!-- Message SHA-256 Hash 顯示區 -->
+    <div class="hash-display-box">
+        <div class="hash-label">
+            🔍 Message SHA-256 Hash <span class="hash-hint">(用於驗證訊息完整性)</span>
+        </div>
+        <div id="msg-hash-output" class="hash-output">
+            <span style="color: #666;">等待輸入訊息...</span>
+        </div>
+        <button onclick="copyHash()" class="copy-hash-btn" id="copy-hash-btn" style="display: none;">📋 複製 Hash</button>
+    </div>
+
+    <!-- ✅ 新增：站長原始 Message Hash 輸入與比對區 -->
+    <div class="compare-hash-box">
+        <div class="compare-label">
+            🎯 站長原始 Message 的 SHA-256 <span class="hash-hint">(貼上以進行比對)</span>
+        </div>
+        <input type="text" id="admin-hash-input" class="hash-input" placeholder="貼上站長公布的 SHA-256 Hash..." oninput="compareHashes()" autocomplete="off">
+        <div id="compare-result" class="compare-result" style="display: none;"></div>
+    </div>
+
+    <!-- 驗證說明區塊 -->
     <div class="verify-notice">
         <div class="notice-title">📋 驗證說明:</div>
         <div class="notice-content">
@@ -60,22 +80,127 @@
     .hacker-input {
         width: 100%;
         padding: 10px;
-        background-color: #161b22; /* 深色背景 */
+        background-color: #161b22;
         border: 1px solid #30363d;
         color: #c9d1d9;
         border-radius: 6px;
-        font-family: 'Courier New', monospace; /* 駭客字體 */
+        font-family: 'Courier New', monospace;
         font-size: 0.95rem;
-        box-sizing: border-box; /* 防止 padding 撐破寬度 */
+        box-sizing: border-box;
         transition: border-color 0.2s;
     }
     .hacker-input:focus {
         outline: none;
-        border-color: #58a6ff; /* GitHub 藍 */
+        border-color: #58a6ff;
         box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
     }
 
-    /* ✅ 新增：驗證說明區塊樣式 */
+    /* Hash 顯示區塊 */
+    .hash-display-box {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .hash-label {
+        color: #79c0ff;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .hash-hint {
+        color: #8b949e;
+        font-weight: normal;
+        font-size: 0.85rem;
+    }
+    .hash-output {
+        background: #010409;
+        border: 1px solid #21262d;
+        border-radius: 4px;
+        padding: 12px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.85rem;
+        color: #7ee787;
+        word-break: break-all;
+        line-height: 1.5;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+    }
+    .copy-hash-btn {
+        margin-top: 10px;
+        background: transparent;
+        border: 1px solid #30363d;
+        color: #8b949e;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: 0.2s;
+    }
+    .copy-hash-btn:hover {
+        border-color: #58a6ff;
+        color: #58a6ff;
+    }
+
+    /* ✅ 新增：Hash 比對區塊 */
+    .compare-hash-box {
+        background: #161b22;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .compare-label {
+        color: #d2a8ff;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .hash-input {
+        width: 100%;
+        padding: 10px;
+        background: #010409;
+        border: 1px solid #21262d;
+        color: #c9d1d9;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.85rem;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+    .hash-input:focus {
+        outline: none;
+        border-color: #d2a8ff;
+        box-shadow: 0 0 0 3px rgba(210, 168, 255, 0.1);
+    }
+    .compare-result {
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        border-left: 4px solid transparent;
+    }
+    .compare-match {
+        background: rgba(46, 160, 67, 0.15);
+        border-left-color: #238636;
+        color: #3fb950;
+    }
+    .compare-mismatch {
+        background: rgba(218, 54, 51, 0.15);
+        border-left-color: #da3633;
+        color: #f85149;
+    }
+
+    /* 驗證說明區塊 */
     .verify-notice {
         background: #161b22;
         border: 1px dashed #30363d;
@@ -100,7 +225,7 @@
 
     /* 按鈕 */
     .verify-btn {
-        background-color: #238636; /* GitHub 綠 */
+        background-color: #238636;
         color: white;
         border: 1px solid rgba(240,246,252,0.1);
         padding: 10px 20px;
@@ -142,6 +267,73 @@
 </style>
 
 <script>
+// 即時計算 Message 的 SHA-256
+async function updateMessageHash() {
+    const msgInput = document.getElementById('input-msg').value;
+    const hashOutput = document.getElementById('msg-hash-output');
+    const copyBtn = document.getElementById('copy-hash-btn');
+
+    if (!msgInput) {
+        hashOutput.innerHTML = '<span style="color: #666;">等待輸入訊息...</span>';
+        copyBtn.style.display = 'none';
+        // 清空比對結果
+        document.getElementById('compare-result').style.display = 'none';
+        return;
+    }
+
+    try {
+        // 計算 SHA-256
+        const msgBuffer = new TextEncoder().encode(msgInput);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        // 顯示結果
+        hashOutput.innerText = hashHex;
+        copyBtn.style.display = 'inline-block';
+
+        // 自動觸發比對
+        compareHashes();
+    } catch (e) {
+        hashOutput.innerHTML = '<span style="color: #ff4444;">計算錯誤</span>';
+        copyBtn.style.display = 'none';
+    }
+}
+
+// ✅ 新增：比對兩個 Hash 是否相同
+function compareHashes() {
+    const userHash = document.getElementById('msg-hash-output').innerText.trim();
+    const adminHash = document.getElementById('admin-hash-input').value.trim().toLowerCase();
+    const resultDiv = document.getElementById('compare-result');
+
+    // 如果任一欄位為空，隱藏結果
+    if (!userHash || userHash === '等待輸入訊息...' || !adminHash) {
+        resultDiv.style.display = 'none';
+        return;
+    }
+
+    // 比對 Hash
+    if (userHash.toLowerCase() === adminHash) {
+        resultDiv.className = 'compare-result compare-match';
+        resultDiv.innerHTML = '✅ <strong>Hash 相符！</strong> 訊息內容與站長原始文字完全一致。';
+    } else {
+        resultDiv.className = 'compare-result compare-mismatch';
+        resultDiv.innerHTML = '❌ <strong>Hash 不符！</strong> 訊息可能有誤（檢查空格、換行、標點符號）。';
+    }
+    resultDiv.style.display = 'block';
+}
+
+// 複製 Hash 功能
+function copyHash() {
+    const hashText = document.getElementById('msg-hash-output').innerText;
+    navigator.clipboard.writeText(hashText).then(() => {
+        const btn = document.getElementById('copy-hash-btn');
+        const originalText = btn.innerText;
+        btn.innerText = "✅ 已複製！";
+        setTimeout(() => btn.innerText = originalText, 1500);
+    });
+}
+
 async function verifySignature() {
     // 1. 取得 Hugo 設定中的公鑰
     const PUB_KEY_B64 = "{{ $.Site.Params.site_verify_key }}";
