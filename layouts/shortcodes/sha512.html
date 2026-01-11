@@ -1,0 +1,139 @@
+<div class="clean-tool-card">
+    <div class="tool-title">SHA-512 Generator</div>
+    
+    <textarea id="sha-input" placeholder="請在此輸入要加密的文字..." rows="3"></textarea>
+    
+    <button onclick="generateSHA512()" class="primary-btn">產生 Hash</button>
+
+    <div id="result-area" class="result-box" style="display: none;">
+        <div class="result-label">Output:</div>
+        <div id="sha-output" class="hash-code"></div>
+        <button onclick="copyHash()" class="copy-btn">複製結果</button>
+    </div>
+</div>
+
+<style>
+    /* 容器：乾淨的卡片風格 */
+    .clean-tool-card {
+        background-color: #1d1e20; /* 配合 PaperMod 的深灰色 */
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 25px;
+        margin: 20px 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .tool-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #e0e0e0;
+    }
+
+    /* 輸入框：標準樣式 */
+    textarea {
+        width: 100%;
+        background: #2e2e33;
+        border: 1px solid #444;
+        color: #fff;
+        padding: 12px;
+        border-radius: 4px;
+        font-size: 1rem;
+        outline: none;
+        box-sizing: border-box; /* 確保不破版 */
+        resize: vertical;
+    }
+
+    textarea:focus {
+        border-color: #666;
+    }
+
+    /* 主要按鈕：簡潔藍色或中性色 */
+    .primary-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #3b82f6; /* 專業藍 */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+
+    .primary-btn:hover {
+        background-color: #2563eb;
+    }
+
+    /* 結果顯示區 */
+    .result-box {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #444;
+    }
+
+    .result-label {
+        font-size: 0.85rem;
+        color: #aaa;
+        margin-bottom: 8px;
+    }
+
+    .hash-code {
+        background: #111;
+        padding: 15px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: #ddd;
+        word-break: break-all;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    /* 複製按鈕 */
+    .copy-btn {
+        margin-top: 10px;
+        background: transparent;
+        border: 1px solid #555;
+        color: #aaa;
+        padding: 5px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+
+    .copy-btn:hover {
+        border-color: #888;
+        color: #fff;
+    }
+</style>
+
+<script>
+    async function generateSHA512() {
+        const input = document.getElementById('sha-input').value;
+        const outputDiv = document.getElementById('sha-output');
+        const resultArea = document.getElementById('result-area');
+
+        if (!input) return; // 沒輸入就不動作
+
+        // 1. 計算 Hash
+        const msgBuffer = new TextEncoder().encode(input);
+        const hashBuffer = await crypto.subtle.digest('SHA-512', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+        // 2. 直接顯示結果 (無動畫)
+        outputDiv.innerText = hashHex;
+        resultArea.style.display = 'block';
+    }
+
+    function copyHash() {
+        const text = document.getElementById('sha-output').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            // 簡單的反饋：按鈕文字變一下，1秒後變回來
+            const btn = document.querySelector('.copy-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "已複製！";
+            setTimeout(() => btn.innerText = originalText, 1000);
+        });
+    }
+</script>
