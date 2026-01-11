@@ -11,7 +11,8 @@ draft: false
 ### 📋 功能選單
 
 - [🔐 SHA-512 Hash Generator](/sha512/)
-- [🔤 Base64 Converter](/base64/)   <-- 新增這一行
+- [🔤 Base64 Converter](/base64/)
+- [💪 密碼強度檢測儀 (0-100)](/password-check/)
 
 - [🔜 待新增工具...](#)
 
