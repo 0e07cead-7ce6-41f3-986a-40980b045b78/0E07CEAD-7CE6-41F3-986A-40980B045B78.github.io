@@ -59,6 +59,10 @@ menu:
       name: Cyber Tools
       url: /tools/
       weight: 40
+    - identifier: verify       # <--- 新增這一段
+      name: Signed Board       # 選單顯示名稱
+      url: /verify/            # 連結網址
+      weight: 50
 
 markup:
   goldmark:
