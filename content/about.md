@@ -4,6 +4,22 @@ layout: "about"
 summary: "verify my identity"
 ---
 
+<h1>✍️ 我的數位簽名</h1>
+<p>用於驗證檔案完整性與身份識別。</p>
+
+<div style="background-color: #161b22; border: 1px solid #30363d; padding: 20px; border-radius: 6px; font-family: 'Courier New', monospace; color: #c9d1d9; margin-bottom: 40px;">
+    <div style="margin-bottom: 15px;">
+        <span style="color: #79c0ff; font-weight: bold;">Public Key (Base64):</span><br>
+        <span style="color: #e0e0e0; word-break: break-all;">G1wkVr/RzU/rFKr6pkxz3ZdLoIXCk7LKvjVHzIDA+CM=</span>
+    </div>
+    <div>
+        <span style="color: #79c0ff; font-weight: bold;">Public Key Fingerprint (SHA-256):</span><br>
+        <span style="color: #e0e0e0; word-break: break-all;">F0F266E24ABBF0FF33737C83F0DD1E5ED333E92BC1E7DE6186CCC0C562FC14B0</span>
+    </div>
+</div>
+
+<hr style="border: 0; border-top: 1px dashed #333; margin: 30px 0;">
+
 <h1>🔒 我的 GPG 公鑰</h1>
 <p>這是我的身分驗證金鑰。如果您需要傳送加密訊息給我，請使用此公鑰。</p>
 
