@@ -1,0 +1,115 @@
+<div class="clean-tool-card">
+    <div class="tool-title">URL Encoder / Decoder</div>
+    
+    <textarea id="url-input" placeholder="輸入網址或文字 (例如: https://example.com/?q=測試)..." rows="4"></textarea>
+    
+    <div class="btn-group">
+        <button onclick="processURL('encode')" class="primary-btn">⬇️ 編碼 (Encode)</button>
+        <button onclick="processURL('decode')" class="secondary-btn">⬆️ 解碼 (Decode)</button>
+        <button onclick="clearUrlTool()" class="clear-btn">清除</button>
+    </div>
+
+    <div id="url-result-area" class="result-box" style="display: none;">
+        <div class="result-label">結果 Result:</div>
+        <div id="url-output" class="hash-code"></div>
+        <button onclick="copyUrlResult()" class="copy-btn">複製結果</button>
+    </div>
+</div>
+
+<style>
+    /* 沿用一致的 CSS 風格 */
+    .clean-tool-card {
+        background-color: #1d1e20;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 25px;
+        margin: 20px 0;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .tool-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; color: #e0e0e0; }
+    
+    textarea {
+        width: 100%;
+        background: #2e2e33;
+        border: 1px solid #444;
+        color: #fff;
+        padding: 12px;
+        border-radius: 4px;
+        font-size: 1rem;
+        outline: none;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+    textarea:focus { border-color: #666; }
+
+    .btn-group { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+    
+    .primary-btn, .secondary-btn, .clear-btn {
+        padding: 10px 20px; border: none; border-radius: 4px;
+        cursor: pointer; font-size: 0.95rem; color: white; transition: opacity 0.2s;
+    }
+    .primary-btn { background-color: #3b82f6; } /* 藍 */
+    .secondary-btn { background-color: #10b981; } /* 綠 */
+    .clear-btn { background-color: #ef4444; } /* 紅 */
+    button:hover { opacity: 0.9; }
+
+    .result-box { margin-top: 20px; padding-top: 20px; border-top: 1px solid #444; }
+    .result-label { font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }
+    .hash-code {
+        background: #111; padding: 15px; border-radius: 4px;
+        font-family: monospace; color: #ddd; word-break: break-all;
+        font-size: 0.9rem; white-space: pre-wrap;
+    }
+    .copy-btn {
+        margin-top: 10px; background: transparent; border: 1px solid #555;
+        color: #aaa; padding: 5px 12px; border-radius: 4px; cursor: pointer;
+    }
+    .copy-btn:hover { border-color: #888; color: #fff; }
+</style>
+
+<script>
+    function processURL(action) {
+        const input = document.getElementById('url-input').value;
+        const outputDiv = document.getElementById('url-output');
+        const resultArea = document.getElementById('url-result-area');
+
+        if (!input.trim()) return;
+
+        let result = "";
+        
+        try {
+            if (action === 'encode') {
+                // 使用 encodeURIComponent 進行完整編碼 (包含 : / ? 等符號)
+                result = encodeURIComponent(input);
+            } else {
+                // 解碼
+                result = decodeURIComponent(input);
+            }
+            // 成功時字體顏色為正常
+            outputDiv.style.color = "#ddd";
+        } catch (e) {
+            // 捕捉解碼錯誤 (例如不完整的 %E4...)
+            result = "❌ 錯誤：無效的 URL 編碼格式 (Invalid URI Sequence)\n請檢查是否有缺漏的 % 符號。";
+            // 錯誤時字體顏色變紅
+            outputDiv.style.color = "#ff4444";
+        }
+
+        outputDiv.innerText = result;
+        resultArea.style.display = 'block';
+    }
+
+    function clearUrlTool() {
+        document.getElementById('url-input').value = '';
+        document.getElementById('url-result-area').style.display = 'none';
+    }
+
+    function copyUrlResult() {
+        const text = document.getElementById('url-output').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.querySelector('#url-result-area .copy-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "已複製！";
+            setTimeout(() => btn.innerText = originalText, 1000);
+        });
+    }
+</script>

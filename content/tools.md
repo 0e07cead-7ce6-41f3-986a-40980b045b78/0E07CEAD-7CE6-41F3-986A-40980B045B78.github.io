@@ -12,6 +12,7 @@ draft: false
 
 - [🔐 SHA-512 Hash Generator](/sha512/)
 - [🔤 Base64 Converter](/base64/)
+- [🔗 URL Encoder / Decoder](/url-encode/)
 - [💪 密碼強度檢測儀 (0-100)](/password-check/)
 
 - [🔜 待新增工具...](#)
