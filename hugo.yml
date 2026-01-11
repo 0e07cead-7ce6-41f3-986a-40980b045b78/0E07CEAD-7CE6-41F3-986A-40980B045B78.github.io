@@ -8,6 +8,11 @@ buildDrafts: false
 buildFuture: false
 
 params:
+  # --- 🔐 站長身分驗證金鑰 (Hardcoded Public Keys) ---
+  # 這把公鑰將用於 JavaScript 客戶端驗證，確保訊息未被篡改
+  site_verify_key: "G1wkVr/RzU/rFKr6pkxz3ZdLoIXCk7LKvjVHzIDA+CM="
+  site_verify_fingerprint: "F0F266E24ABBF0FF33737C83F0DD1E5ED333E92BC1E7DE6186CCC0C562FC14B0"
+
   # --- 主題外觀設定 ---
   env: production
   defaultTheme: dark  # 強制暗黑模式 (Hacker Style)
@@ -50,10 +55,11 @@ menu:
       name: About Me
       url: /about/
       weight: 30
-    - identifier: tools       # <--- 新增這一段
+    - identifier: tools
       name: Cyber Tools
       url: /tools/
       weight: 40
+
 markup:
   goldmark:
     renderer:
