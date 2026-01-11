@@ -1,0 +1,160 @@
+<div class="signed-box" id="signed-box-{{ .Ordinal }}">
+    <div class="signed-header">
+        <span class="status-icon">⏳</span> 
+        <span class="status-text">Verifying Signature...</span>
+    </div>
+    
+    <div class="signed-content">
+        {{ .Get "msg" }}
+    </div>
+
+    <input type="hidden" class="data-msg" value="{{ .Get "msg" }}">
+    <input type="hidden" class="data-sig" value="{{ .Get "sig" }}">
+    
+    <div class="signed-footer">
+        🔑 Signed by Admin (Key: {{ substr $.Site.Params.site_verify_key 0 8 }}...)
+    </div>
+</div>
+
+<style>
+    /* 容器樣式：駭客終端機風格 */
+    .signed-box {
+        border: 1px solid #444;
+        background: #0d1117;
+        padding: 20px;
+        border-radius: 6px;
+        margin: 25px 0;
+        font-family: 'Courier New', monospace;
+        position: relative;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    /* 標頭狀態列 */
+    .signed-header {
+        font-size: 0.85rem;
+        color: #8b949e;
+        border-bottom: 1px dashed #30363d;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+    }
+
+    /* 訊息內容 */
+    .signed-content {
+        color: #e6edf3;
+        line-height: 1.6;
+        font-size: 1.05rem;
+        white-space: pre-wrap; /* 保留換行格式 */
+    }
+
+    /* 頁尾資訊 */
+    .signed-footer {
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #21262d;
+        font-size: 0.75rem;
+        color: #484f58;
+        text-align: right;
+    }
+
+    /* === 驗證狀態樣式 === */
+    
+    /* 成功 (綠色) */
+    .verified-success {
+        border-color: #238636; /* GitHub Green */
+        background: #0d1117; 
+        box-shadow: 0 0 15px rgba(35, 134, 54, 0.15);
+    }
+    .verified-success .status-text { color: #3fb950; }
+    .verified-success .signed-header { border-bottom-color: #238636; }
+
+    /* 失敗 (紅色) */
+    .verified-fail {
+        border-color: #da3633; /* GitHub Red */
+        background: #1a0505; 
+    }
+    .verified-fail .status-text { color: #f85149; }
+    .verified-fail .status-icon { filter: grayscale(1) brightness(0.5); }
+</style>
+
+<script>
+(async function() {
+    // 1. 從 Hugo Config 讀取全域公鑰
+    // 注意：這裡使用 Go Template 語法注入變數
+    const SITE_PUB_KEY_B64 = "{{ $.Site.Params.site_verify_key }}";
+
+    // 取得 DOM 元素
+    const container = document.getElementById("signed-box-{{ .Ordinal }}");
+    if (!container) return;
+
+    const msg = container.querySelector('.data-msg').value;
+    const sigB64 = container.querySelector('.data-sig').value;
+    const statusText = container.querySelector('.status-text');
+    const statusIcon = container.querySelector('.status-icon');
+
+    // 輔助函式：Base64 轉 ArrayBuffer
+    function b64ToBuf(b64) {
+        try {
+            const bin = atob(b64);
+            const buf = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+            return buf;
+        } catch (e) {
+            console.error("Base64 Decode Error:", e);
+            return null;
+        }
+    }
+
+    try {
+        // 2. 檢查公鑰是否存在
+        if (!SITE_PUB_KEY_B64 || SITE_PUB_KEY_B64.trim() === "") {
+            throw new Error("Missing Public Key in hugo.yml");
+        }
+
+        // 3. 準備資料
+        const enc = new TextEncoder();
+        const msgData = enc.encode(msg); // 將訊息轉為 Bytes
+        const sigData = b64ToBuf(sigB64); // 將簽名轉為 Bytes
+        const keyData = b64ToBuf(SITE_PUB_KEY_B64); // 將公鑰轉為 Bytes
+
+        if (!sigData || !keyData) throw new Error("Invalid Key or Signature format");
+
+        // 4. 匯入公鑰 (Ed25519 Raw Format)
+        const cryptoKey = await window.crypto.subtle.importKey(
+            "raw", 
+            keyData,
+            { name: "Ed25519", namedCurve: "Ed25519" },
+            true, 
+            ["verify"]
+        );
+
+        // 5. 執行驗證 (Verify)
+        const isValid = await window.crypto.subtle.verify(
+            "Ed25519",
+            cryptoKey,
+            sigData,
+            msgData
+        );
+
+        // 6. 更新 UI 結果
+        if (isValid) {
+            container.classList.add("verified-success");
+            statusIcon.innerText = "✅";
+            statusText.innerText = "SECURE: Signature Verified (Trusted Source)";
+        } else {
+            throw new Error("Signature Mismatch");
+        }
+
+    } catch (e) {
+        console.warn("Verification Failed:", e);
+        container.classList.add("verified-fail");
+        statusIcon.innerText = "⛔";
+        statusText.innerText = "WARNING: Invalid Signature / Tampered Message";
+    }
+})();
+</script>
