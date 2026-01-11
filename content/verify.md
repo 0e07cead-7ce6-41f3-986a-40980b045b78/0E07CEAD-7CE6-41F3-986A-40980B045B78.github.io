@@ -12,6 +12,6 @@ summary: "Verify authenticity of messages signed by the admin."
 
 系統將使用 **硬編碼於網站核心的公鑰** 進行核對。
 
----
+----
 
 {{< verify-tool >}}
