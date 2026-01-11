@@ -1,0 +1,179 @@
+<div class="verify-tool-card">
+    <div class="tool-header">
+        <h3>🔐 互動式簽章驗證 (Interactive Verifier)</h3>
+        <p>請輸入訊息與簽名，系統將使用站長公鑰 (Ed25519) 進行驗證。</p>
+    </div>
+
+    <div class="input-group">
+        <label class="input-label">Signature (Base64)</label>
+        <input type="text" id="input-sig" class="hacker-input" placeholder="貼上 Base64 簽名字串 (例如: G1wkVr...)" autocomplete="off">
+    </div>
+
+    <div class="input-group">
+        <label class="input-label">Message</label>
+        <textarea id="input-msg" class="hacker-input" rows="5" placeholder="貼上對應的原始訊息文字..."></textarea>
+    </div>
+
+    <div class="action-area">
+        <button onclick="verifySignature()" class="verify-btn">Verify Signature</button>
+        <div id="verify-result" class="result-display" style="display:none;"></div>
+    </div>
+
+    <div class="key-info">
+        Using Public Key: {{ substr $.Site.Params.site_verify_key 0 12 }}... (Hardcoded in System)
+    </div>
+</div>
+
+<style>
+    /* 整體卡片風格 */
+    .verify-tool-card {
+        background: #0d1117;
+        border: 1px solid #30363d;
+        border-radius: 6px;
+        padding: 25px;
+        margin: 20px 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .tool-header h3 { margin-top: 0; color: #e6edf3; }
+    .tool-header p { color: #8b949e; font-size: 0.9rem; margin-bottom: 20px; }
+
+    /* 輸入區塊 */
+    .input-group { margin-bottom: 20px; }
+    .input-label {
+        display: block;
+        color: #e6edf3;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .hacker-input {
+        width: 100%;
+        padding: 10px;
+        background-color: #161b22; /* 深色背景 */
+        border: 1px solid #30363d;
+        color: #c9d1d9;
+        border-radius: 6px;
+        font-family: 'Courier New', monospace; /* 駭客字體 */
+        font-size: 0.95rem;
+        box-sizing: border-box; /* 防止 padding 撐破寬度 */
+        transition: border-color 0.2s;
+    }
+    .hacker-input:focus {
+        outline: none;
+        border-color: #58a6ff; /* GitHub 藍 */
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+    }
+
+    /* 按鈕 */
+    .verify-btn {
+        background-color: #238636; /* GitHub 綠 */
+        color: white;
+        border: 1px solid rgba(240,246,252,0.1);
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .verify-btn:hover { background-color: #2ea043; }
+    .verify-btn:active { background-color: #1f6f30; }
+
+    /* 結果顯示區 */
+    .result-display {
+        margin-top: 15px;
+        padding: 15px;
+        border-radius: 6px;
+        font-weight: bold;
+        border-left: 5px solid transparent;
+    }
+    .result-success {
+        background: rgba(46, 160, 67, 0.15);
+        border-left-color: #238636;
+        color: #3fb950;
+    }
+    .result-fail {
+        background: rgba(218, 54, 51, 0.15);
+        border-left-color: #da3633;
+        color: #f85149;
+    }
+
+    .key-info {
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #484f58;
+        text-align: right;
+        font-family: monospace;
+    }
+</style>
+
+<script>
+async function verifySignature() {
+    // 1. 取得 Hugo 設定中的公鑰
+    const PUB_KEY_B64 = "{{ $.Site.Params.site_verify_key }}";
+    
+    // 取得使用者輸入
+    const sigInput = document.getElementById('input-sig').value.trim();
+    const msgInput = document.getElementById('input-msg').value; // 訊息不 trim，保留原始格式
+    const resultDiv = document.getElementById('verify-result');
+
+    // 簡單檢查
+    if (!sigInput || !msgInput) {
+        showResult(false, "請輸入完整的簽名與訊息 (Missing Input)");
+        return;
+    }
+
+    try {
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = "⏳ Verifying...";
+        resultDiv.className = "result-display";
+
+        // 2. 轉換資料格式
+        const enc = new TextEncoder();
+        const msgData = enc.encode(msgInput);
+        const sigData = b64ToBuf(sigInput);
+        const keyData = b64ToBuf(PUB_KEY_B64);
+
+        if(!sigData) throw new Error("無效的 Base64 簽名格式");
+
+        // 3. 匯入公鑰
+        const cryptoKey = await window.crypto.subtle.importKey(
+            "raw", keyData, { name: "Ed25519", namedCurve: "Ed25519" }, true, ["verify"]
+        );
+
+        // 4. 驗證
+        const isValid = await window.crypto.subtle.verify(
+            "Ed25519", cryptoKey, sigData, msgData
+        );
+
+        // 5. 顯示結果
+        if (isValid) {
+            showResult(true, "✅ 驗證成功 (VERIFIED): 此訊息確實由站長簽署，未被篡改。");
+        } else {
+            showResult(false, "⛔ 驗證失敗 (FAILED): 簽名無效，訊息可能已被篡改或非本人發送。");
+        }
+
+    } catch (e) {
+        console.error(e);
+        showResult(false, "❌ 執行錯誤: " + e.message);
+    }
+}
+
+function showResult(isSuccess, text) {
+    const div = document.getElementById('verify-result');
+    div.style.display = 'block';
+    div.innerText = text;
+    div.className = "result-display " + (isSuccess ? "result-success" : "result-fail");
+}
+
+function b64ToBuf(b64) {
+    try {
+        const bin = atob(b64);
+        const buf = new Uint8Array(bin.length);
+        for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+        return buf;
+    } catch (e) { return null; }
+}
+</script>
