@@ -14,6 +14,15 @@
         <textarea id="input-msg" class="hacker-input" rows="5" placeholder="貼上對應的原始訊息文字..."></textarea>
     </div>
 
+    <!-- ✅ 新增：驗證說明區塊 -->
+    <div class="verify-notice">
+        <div class="notice-title">📋 驗證說明:</div>
+        <div class="notice-content">
+            本簽名使用 <strong>Ed25519 演算法</strong>，對「原始 UTF-8 文字」進行簽署。<br>
+            驗證時請確保留言內容未被修改（包含空白、換行、標點）。
+        </div>
+    </div>
+
     <div class="action-area">
         <button onclick="verifySignature()" class="verify-btn">Verify Signature</button>
         <div id="verify-result" class="result-display" style="display:none;"></div>
@@ -64,6 +73,29 @@
         outline: none;
         border-color: #58a6ff; /* GitHub 藍 */
         box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+    }
+
+    /* ✅ 新增：驗證說明區塊樣式 */
+    .verify-notice {
+        background: #161b22;
+        border: 1px dashed #30363d;
+        border-radius: 6px;
+        padding: 15px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+    }
+    .notice-title {
+        color: #79c0ff;
+        font-weight: bold;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    .notice-content {
+        color: #8b949e;
+        line-height: 1.6;
+    }
+    .notice-content strong {
+        color: #c9d1d9;
     }
 
     /* 按鈕 */
