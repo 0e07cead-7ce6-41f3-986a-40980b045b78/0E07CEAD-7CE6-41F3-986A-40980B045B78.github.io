@@ -15,13 +15,3 @@ summary: "Verify authenticity of messages signed by the admin."
 ---
 
 {{< verify-tool >}}
-
----
-
-### 🧪 測試樣本 (Copy & Paste to Test)
-
-您可以複製以下內容來測試工具是否正常運作：
-
-**Message (訊息):**
-```text
-這是一則測試訊息
