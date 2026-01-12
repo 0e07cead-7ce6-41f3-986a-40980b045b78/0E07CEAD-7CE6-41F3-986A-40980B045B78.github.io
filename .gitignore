@@ -20,5 +20,3 @@ id_ed25519
 id_ed25519.pub
 secret_token.txt
 
-# --- 暫時隱藏的檔案 ---
-README.md
