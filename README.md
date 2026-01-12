@@ -1,16 +1,16 @@
 # Security & Code
 
-👋 **歡迎來到我的資安研究實驗室**
+👋 **Welcome to my Security Research Lab**
 
-這裡是我記錄與分享 **滲透測試 (Pentesting)**、**密碼學 (Cryptography)** 以及 **DevSecOps** 技術的空間。
-我熱衷於探索代碼背後的安全機制，並致力於構建更安全、強健的系統。
+This is a space where I document and share insights on **Pentesting**, **Cryptography**, and **DevSecOps**.
+I am passionate about exploring the security mechanisms behind code and dedicated to building safer, more resilient systems.
 
-### 🚀 主要關注領域
-- 🔐 **Web Security**: 網頁安全漏洞分析
-- 🛡️ **DevSecOps**: 自動化安全流程
-- 🧩 **Cryptography**: 密碼學原理與實作
+### 🚀 Key Focus Areas
+- 🔐 **Web Security**: Vulnerability analysis and protection
+- 🛡️ **DevSecOps**: Automated security workflows
+- 🧩 **Cryptography**: Principles and implementation
 
-🔗 **線上閱讀**: [https://12587456.xyz](https://12587456.xyz)
+🔗 **Read Online**: [https://12587456.xyz](https://12587456.xyz)
 
 ---
 > *Thinking like a hacker, building like an engineer.*
@@ -43,3 +43,14 @@ E3JB+i/9dMXrtmstPYab6ZN3/ShLyNgq4L5Ik5Oo
 =fSDZ
 -----END PGP PUBLIC KEY BLOCK-----
 ```
+
+<!-- 
+[中文備註]
+這個 README 用於展示個人資安研究興趣。
+- Security Research Lab: 資安研究實驗室
+- Pentesting: 滲透測試
+- Cryptography: 密碼學
+- DevSecOps: 開發維運安全性
+- Web Security: 網頁安全
+- GPG Key: 用於簽署驗證的公鑰，請勿刪除
+-->
