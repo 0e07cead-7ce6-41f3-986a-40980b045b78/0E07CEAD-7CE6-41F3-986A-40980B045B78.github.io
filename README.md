@@ -1,0 +1,45 @@
+# Security & Code
+
+👋 **歡迎來到我的資安研究實驗室**
+
+這裡是我記錄與分享 **滲透測試 (Pentesting)**、**密碼學 (Cryptography)** 以及 **DevSecOps** 技術的空間。
+我熱衷於探索代碼背後的安全機制，並致力於構建更安全、強健的系統。
+
+### 🚀 主要關注領域
+- 🔐 **Web Security**: 網頁安全漏洞分析
+- 🛡️ **DevSecOps**: 自動化安全流程
+- 🧩 **Cryptography**: 密碼學原理與實作
+
+🔗 **線上閱讀**: [https://12587456.xyz](https://12587456.xyz)
+
+---
+> *Thinking like a hacker, building like an engineer.*
+
+## 🔑 GPG Public Key
+
+```text
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mJMEaV6kqxMJKyQDAwIIAQENBAMEfe/Lw/rBU/s3PYSJFCcBUzxLIimoKTOa0Kr7
+fFcnzskg/StJ4xJSwbmoSvKokToTWD5IzVJxT4ybehSB6DQFqToF+svfh0MKvYI/
+uRmaxMQSvQDWLaqAqG3o0NJO3zkGUo8H+uEeUeDb4lHsFnOnLm/nEbA1YbRmCIcX
+UQQ1JZi0OG1haW4gPGYwZDFhYzJhLTNjODctNDFiMS1hYWNmLTIyYWM2ZGRlOWE0
+YkBhbm9uYWRkeS5jb20+iNMEExMKADsWIQSdL5ASUDYOAwpbwVRpO0rS+JFLsQUC
+aV6kqwIbAwULCQgHAgIiAgYVCgkICwIEFgIDAQIeBwIXgAAKCRBpO0rS+JFLsfdi
+AgCVHM7CkB1bImyL7XAmqYd5viTXtN0sjVucX2tpTgTMOrIm+DylN3CW/VFwtAMQ
+hgaTYWhdazC34tT+QC0L3zFEAf99FGOSbKzX2lS0qe+rNsP2jmiH2rnDyjrJKP6j
+b6OeGNV+BXLs1uQKxNs9Cd8r1NhkhlbKMx1zWpvNZvhDfbCWiLUEEBMKAB0WIQRJ
+mNU4F60g5oYTUspgsJxAOghp8AUCaV6k5QAKCRBgsJxAOghp8CBNAgCC4/OdXoHo
+TODywqHq0HBpNa9iuJSOqO+OQwKE7djHtjK69HzsydxEMAZz3sOdyYdAT6u2MXr7
+qp3yF/BtWxG4AgCUzQiqd92eRzOkciCnsvKBYradCOdzzl8RlQf5ExhgC4kPLGnO
+Y+Sp9LywosfjNlvZmlc/N3YrDV7V5lz/sutHuJcEaV6kqxIJKyQDAwIIAQENBAME
+ZoROU2kzGT4QzeibZUnSzZfGW5OcIJcXt6UMDz48n46sZzZp7pbG009cAgFGDPuA
+2u2Sm6MjiarSIb+GGGlsnUA0MmUKUtt+yx2CJkIphlIzJ9ctK8VcOAeJ9zrNijba
+yjQ0qB8eiallxPUWFr9LT00hgImdYrot98+vmJyVtroDAQoJiLgEGBMKACAWIQSd
+L5ASUDYOAwpbwVRpO0rS+JFLsQUCaV6kqwIbDAAKCRBpO0rS+JFLsbJyAgCVeuj7
+IYZoEhu2Cm1+4gBgD5X8RqxHcWdHUacS8RMTKlfcdiiBPRTi/cqzcezq5K8ICuWj
+242fkBqZV+LkTBF8AfoCWUUHratvKh0gZdeov+aWvWVQz64Pg+T/GcX8fQDfTBTR
+E3JB+i/9dMXrtmstPYab6ZN3/ShLyNgq4L5Ik5Oo
+=fSDZ
+-----END PGP PUBLIC KEY BLOCK-----
+```
